@@ -7,6 +7,9 @@ require("dotenv").config();
 
 const app = express();
 
+app.use("/products", getProducts);
+app.use(express.json());
+
 function getProducts(req: Request, res: Response) {
   pool.query("SELECT * FROM products", (error: Error, products: any) => {
     if (error) {
@@ -16,11 +19,10 @@ function getProducts(req: Request, res: Response) {
   });
 }
 
-app.get("/hello", (_, res) => {
-  res.send("Hello Vite + React + TypeScript!");
+app.post("/post", (req, res) => {
+  console.log(req.body);
+  res.json(req.body);
 });
-
-app.use("/products", getProducts);
 
 ViteExpress.listen(app, 3000, () =>
   console.log(`Server is listening on port 3000...`)

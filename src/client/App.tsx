@@ -1,6 +1,7 @@
 import "./App.css";
 
 import React, { useEffect, useState } from "react";
+import Form from "./Form";
 
 type Data = {
   product_id: number;
@@ -18,18 +19,19 @@ function App() {
       .then((data) => setData(data));
   }, []);
 
-  console.log(data);
-
   return (
-    <div className="App">
-      {data.map((info) => (
-        <React.Fragment key={info.product_id}>
-          <h2>{info.name}</h2>
-          <p>${info.price}</p>
-          <p>{info.description}</p>
-        </React.Fragment>
-      ))}
-    </div>
+    <>
+      <Form />
+      <div className="App">
+        {data.map((info) => (
+          <React.Fragment key={info.product_id}>
+            <h2>{info.name}</h2>
+            <p>${info.price}</p>
+            <p>{info.description}</p>
+          </React.Fragment>
+        ))}
+      </div>
+    </>
   );
 }
 

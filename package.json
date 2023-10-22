@@ -8,9 +8,12 @@
     "build": "vite build"
   },
   "dependencies": {
+    "@types/pg": "^8.10.7",
+    "dotenv": "^16.3.1",
     "express": "^4.18.2",
-    "react-dom": "^18.2.0",
+    "pg": "^8.11.3",
     "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "ts-node": "^10.9.1",
     "typescript": "^4.9.3",
     "vite-express": "*"

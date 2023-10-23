@@ -1,4 +1,4 @@
-import express, { Request, Response } from "express";
+import express, { Request, Response, query } from "express";
 import ViteExpress from "vite-express";
 import pool from "./db.config";
 require("dotenv").config();
@@ -19,9 +19,27 @@ function getProducts(req: Request, res: Response) {
   });
 }
 
-app.post("/post", (req, res) => {
-  console.log(req.body);
-  res.json(req.body);
+app.post("/post", async (req, res) => {
+  const client = await pool.connect();
+  try {
+    await client.query("BEGIN");
+    const queryText =
+      "INSERT INTO products (name, price, description) VALUES($1, $2, $3)";
+    await client.query(queryText, [
+      req.body.name,
+      req.body.price,
+      req.body.description,
+    ]);
+    await client.query("COMMIT");
+    res.json(req.body);
+  } catch (e) {
+    await client.query("ROLLBACK");
+    throw e;
+  } finally {
+    client.release();
+  }
+
+  console.log("phew!");
 });
 
 ViteExpress.listen(app, 3000, () =>

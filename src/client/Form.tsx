@@ -6,6 +6,10 @@ type FormData = {
   description: string;
 };
 
+type FormProps = {
+  onDataUpdate: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
 async function postData(url: string = "", data: FormData) {
   const response = await fetch(url, {
     method: "POST",
@@ -29,7 +33,7 @@ function hasRequiredKeys(obj: Object) {
   }
 }
 
-export default function Form() {
+export default function Form({ onDataUpdate }: FormProps) {
   const [formData, setFormData] = useState<FormData>({
     name: "",
     price: 0,
@@ -62,6 +66,7 @@ export default function Form() {
       price: 0,
       description: "",
     });
+    onDataUpdate((value) => !value);
   };
 
   return (

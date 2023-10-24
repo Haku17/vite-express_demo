@@ -11,12 +11,15 @@ app.use(express.json());
 
 // Get all products
 function getProducts(req: Request, res: Response) {
-  pool.query("SELECT * FROM products", (error: Error, products: any) => {
-    if (error) {
-      throw error;
+  pool.query(
+    "SELECT * FROM products ORDER BY id DESC",
+    (error: Error, products: any) => {
+      if (error) {
+        throw error;
+      }
+      res.status(200).json(products.rows);
     }
-    res.status(200).json(products.rows);
-  });
+  );
 }
 
 // Add a single product to DB
@@ -57,8 +60,27 @@ async function deleteProduct(req: Request, res: Response) {
   }
 }
 
+async function updateProduct(req: Request, res: Response) {
+  const { id, name, price, description } = req.body;
+  const client = await pool.connect();
+  try {
+    await client.query("BEGIN");
+    const queryText =
+      "UPDATE products SET name=$2, price=$3, description=$4 WHERE ID=$1";
+    await client.query(queryText, [id, name, price, description]);
+    await client.query("COMMIT");
+    res.json(req.body);
+  } catch (e) {
+    await client.query("ROLLBACK");
+    throw e;
+  } finally {
+    client.release();
+  }
+}
+
 app.get("/products", getProducts);
 app.post("/products", addProduct);
+app.put("/products", updateProduct);
 app.delete("/products", deleteProduct);
 
 ViteExpress.listen(app, 3000, () =>

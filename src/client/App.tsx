@@ -26,6 +26,7 @@ function App() {
           date_time={editInputs.date_time}
           id={editInputs.id}
           setEditItems={setEditItems}
+          setItemsUpdate={setItemsUpdate}
         />
       ) : (
         <div className="flex flex-col mx-auto my-12 relative sm:max-w-[850px] justify-center items-center">

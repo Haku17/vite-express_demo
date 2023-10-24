@@ -3,7 +3,19 @@ import { Data } from "./types/types";
 
 type UpdateFormProps = Data & {
   setEditItems: React.Dispatch<React.SetStateAction<boolean>>;
+  setItemsUpdate: React.Dispatch<React.SetStateAction<boolean>>;
 };
+
+async function putData(url: string = "", data: Data) {
+  const response = await fetch(url, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+  return response.json();
+}
 
 export default function UpdateForm({
   name,
@@ -12,6 +24,7 @@ export default function UpdateForm({
   id,
   date_time,
   setEditItems,
+  setItemsUpdate,
 }: UpdateFormProps) {
   const [updateData, setUpdateData] = useState<Data>({
     name,
@@ -33,8 +46,19 @@ export default function UpdateForm({
     });
   };
 
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault;
+    putData("/products", updateData).then((res) => console.log(res));
+
+    setEditItems(false);
+    setItemsUpdate((value) => !value);
+  };
+
   return (
-    <form className="flex flex-col bg-gray-100 p-4 rounded-xl gap-4 sm:w-[60%]">
+    <form
+      onSubmit={handleSubmit}
+      className="flex flex-col bg-gray-100 p-4 rounded-xl gap-4 sm:w-[60%]"
+    >
       <input
         className="p-2 "
         type="text"

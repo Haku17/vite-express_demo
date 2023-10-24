@@ -4,4 +4,4 @@ export type Data = {
   price: number;
   description: string;
   date_time: string;
-}[];
+};

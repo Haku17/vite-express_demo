@@ -7,7 +7,7 @@ type FormData = {
 };
 
 type FormProps = {
-  onDataUpdate: React.Dispatch<React.SetStateAction<boolean>>;
+  onItemsUpdate: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 async function postData(url: string = "", data: FormData) {
@@ -33,7 +33,7 @@ function hasRequiredKeys(obj: Object) {
   }
 }
 
-export default function Form({ onDataUpdate }: FormProps) {
+export default function Form({ onItemsUpdate }: FormProps) {
   const [formData, setFormData] = useState<FormData>({
     name: "",
     price: 0,
@@ -57,16 +57,15 @@ export default function Form({ onDataUpdate }: FormProps) {
 
     const validatedFormData = hasRequiredKeys(formData);
 
-    postData("/post", validatedFormData).then((res) => console.log(res));
+    postData("/products", validatedFormData).then((res) => console.log(res));
 
-    console.log(validatedFormData);
     // setFormData back to empty object
     setFormData({
       name: "",
       price: 0,
       description: "",
     });
-    onDataUpdate((value) => !value);
+    onItemsUpdate((value) => !value);
   };
 
   return (

@@ -7,7 +7,7 @@ require("dotenv").config();
 
 const app = express();
 
-app.use("/products", getProducts);
+app.get("/products", getProducts);
 app.use(express.json());
 
 function getProducts(req: Request, res: Response) {
@@ -19,7 +19,7 @@ function getProducts(req: Request, res: Response) {
   });
 }
 
-app.post("/post", async (req, res) => {
+async function addProduct(req: Request, res: Response) {
   const client = await pool.connect();
   try {
     await client.query("BEGIN");
@@ -38,9 +38,9 @@ app.post("/post", async (req, res) => {
   } finally {
     client.release();
   }
+}
 
-  console.log("phew!");
-});
+app.post("/products", addProduct);
 
 ViteExpress.listen(app, 3000, () =>
   console.log(`Server is listening on port 3000...`)

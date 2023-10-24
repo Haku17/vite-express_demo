@@ -1,12 +1,33 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Data } from "./types/types";
 
 type ItemListProps = {
   itemsUpdate: boolean;
+  setItemsUpdate: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export default function ItemList({ itemsUpdate }: ItemListProps) {
+async function deleteItem(url: string = "", id: { id: number }) {
+  const response = await fetch(url, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(id),
+  });
+  return response.json();
+}
+
+export default function ItemList({
+  itemsUpdate,
+  setItemsUpdate,
+}: ItemListProps) {
   const [items, setItems] = useState<Data | []>([]);
+
+  const handleDelete = (id: number) => {
+    const idObj = { id };
+    deleteItem("/products", idObj);
+    setItemsUpdate((value) => !value);
+  };
 
   useEffect(() => {
     fetch("/products")
@@ -22,6 +43,7 @@ export default function ItemList({ itemsUpdate }: ItemListProps) {
           <p>${item.price}</p>
           <p>{item.description}</p>
           <p>{item.date_time}</p>
+          <button onClick={() => handleDelete(item.id)}>Delete me!</button>
         </div>
       ))}
     </>

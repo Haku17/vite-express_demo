@@ -1,5 +1,4 @@
 import "./App.css";
-
 import { useState } from "react";
 import Form from "./Form";
 import ItemList from "./ItemList";
@@ -9,9 +8,9 @@ function App() {
 
   return (
     <>
-      <div className="App">
+      <div className="flex flex-col mx-auto relative">
         <Form onItemsUpdate={setItemsUpdate} />
-        <ItemList itemsUpdate={itemsUpdate} />
+        <ItemList itemsUpdate={itemsUpdate} setItemsUpdate={setItemsUpdate} />
       </div>
     </>
   );

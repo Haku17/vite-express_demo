@@ -8,7 +8,7 @@ function App() {
 
   return (
     <>
-      <div className="flex flex-col mx-auto relative">
+      <div className="flex flex-col mx-auto my-12 relative sm:max-w-[850px] justify-center items-center">
         <Form onItemsUpdate={setItemsUpdate} />
         <ItemList itemsUpdate={itemsUpdate} setItemsUpdate={setItemsUpdate} />
       </div>

@@ -69,8 +69,12 @@ export default function Form({ onItemsUpdate }: FormProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form
+      onSubmit={handleSubmit}
+      className="flex flex-col bg-gray-100 p-4 rounded-xl gap-4 sm:w-[60%]"
+    >
       <input
+        className="p-2 "
         type="text"
         id="name"
         placeholder="Name"
@@ -78,6 +82,7 @@ export default function Form({ onItemsUpdate }: FormProps) {
         onChange={(e) => handleOnChange(e, "name")}
       />
       <input
+        className="p-2"
         type="number"
         id="price"
         placeholder="Price"
@@ -85,12 +90,15 @@ export default function Form({ onItemsUpdate }: FormProps) {
         onChange={(e) => handleOnChange(e, "price")}
       />
       <textarea
+        className="p-2"
         id="description"
         placeholder="Description..."
         value={formData.description}
         onChange={(e) => handleOnChange(e, "description")}
       />
-      <button type="submit">Save</button>
+      <button type="submit" className="bg-blue-600 text-white rounded-xl py-2">
+        Save
+      </button>
     </form>
   );
 }
